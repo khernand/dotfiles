@@ -6,16 +6,34 @@ This directory contains the dotfiles for my system
 
 Ensure you have the following installed on your system
 
-### Git
+Homebrew:
 
-```
-pacman -S git
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-### Stow
+Antigen:
 
+```bash
+brew install antigen
 ```
-pacman -S stow
+
+Pure Prompt:
+
+```bash
+npm i -g pure-prompt
+```
+
+Oh My ZSH:
+
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+
+Autojump:
+
+```bash
+brew install autojump
 ```
 
 ## Installation
@@ -25,6 +43,7 @@ First, check out the dotfiles repo in your $HOME directory using git
 ```bash
 git clone git@github.com:khernand/dotfiles.git
 ```
+
 ```bash
 cd dotfiles
 ```

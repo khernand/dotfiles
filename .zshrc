@@ -6,6 +6,8 @@ include () {
 
 export ZSH="$HOME/.oh-my-zsh"
 
+fpath+=("$(brew --prefix)/share/zsh/site-functions")
+
 source /opt/homebrew/share/antigen/antigen.zsh
 
 ### Plugins - Manged by Antigen (brew install antigen)
@@ -29,7 +31,7 @@ antigen apply
 include $HOME/.bashrc
 include $HOME/.bash_aliases
 
-### Prompt (npm install --global pure-prompt)
+### Prompt brew install pure
 
 include  $ZSH/oh-my-zsh.sh
 
@@ -41,8 +43,6 @@ prompt pure
 
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 export PATH="$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH"
-
-
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
