@@ -36,6 +36,24 @@ Autojump:
 brew install autojump
 ```
 
+## Terminal
+
+Install Fira fonts
+
+```bash
+brew tap homebrew/cask-fonts
+```
+
+```bash
+brew install --cask font-fira-code
+```
+
+In Terminal.app
+
+1. Go to Settings
+1. Go to Profiles
+1. In the bottom left, next to `+` `-`, Import the `Snazzy.terminal` profile and set it as Default
+
 ## Installation
 
 First, check out the dotfiles repo in your $HOME directory using git
