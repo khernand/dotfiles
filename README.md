@@ -2,7 +2,7 @@
 
 This directory contains the dotfiles for my system
 
-## Requirements
+## Requirements - Mac
 
 Ensure you have the following installed on your system
 
@@ -10,6 +10,12 @@ Homebrew:
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Oh My ZSH:
+
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
 Antigen:
@@ -21,13 +27,7 @@ brew install antigen
 Pure Prompt:
 
 ```bash
-npm i -g pure-prompt
-```
-
-Oh My ZSH:
-
-```bash
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+brew install pure
 ```
 
 Autojump:
@@ -50,6 +50,6 @@ cd dotfiles
 
 then use GNU stow to create symlinks
 
-```
-$ stow  . -t $HOME
+```bash
+stow  . -t ~/
 ```
