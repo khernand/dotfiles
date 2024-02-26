@@ -1,0 +1,10 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Kevin Hernandez
+	email = 2459865+khernand@users.noreply.github.com
+	signingkey = AF5E77F9B173F249
+# Please adapt and uncomment the following lines:
+#	name = Kevin Hernandez
+#	email = kphernand@gmail.com
+[commit]
+	gpgsign = false

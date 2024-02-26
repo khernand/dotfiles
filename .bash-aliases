@@ -1,0 +1,8 @@
+#! /bin/bash
+
+function ssh_alias() {
+  trap "osascript ~/Documents/scripts/changeTerminalTheme.scpt" INT EXIT
+  ssh "$@";
+}
+
+alias ssh=ssh_alias
