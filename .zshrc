@@ -54,3 +54,6 @@ if [ -f "$HOME/Downloads/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/Downloa
 
 # The next line enables shell command completion for gcloud.
 if [ -f "$HOME/Downloads/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/Downloads/google-cloud-sdk/completion.zsh.inc"; fi
+
+source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
+source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
