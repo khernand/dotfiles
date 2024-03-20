@@ -8,3 +8,5 @@
 #	email = kphernand@gmail.com
 [commit]
 	gpgsign = false
+[core]
+	editor = vim
