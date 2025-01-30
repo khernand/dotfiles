@@ -8,12 +8,15 @@ export ZSH="$HOME/.oh-my-zsh"
 
 fpath+=("$(brew --prefix)/share/zsh/site-functions")
 
-source /opt/homebrew/share/antigen/antigen.zsh
+include /opt/homebrew/share/antigen/antigen.zsh
+include $HOME/.local/share/antigen.zsh
 
 ### Plugins - Manged by Antigen (brew install antigen)
 antigen use oh-my-zsh
 
 antigen bundle git
+antigen bundle docker
+antigen bundle sudo
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-completions
 antigen bundle chrissicool/zsh-256color
