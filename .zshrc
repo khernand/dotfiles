@@ -8,6 +8,7 @@ export ZSH="$HOME/.oh-my-zsh"
 
 fpath+=("$(brew --prefix)/share/zsh/site-functions")
 
+# Source Antigen correctly across macOS/NixOS
 include /opt/homebrew/share/antigen/antigen.zsh
 include $HOME/.local/share/antigen.zsh
 
@@ -23,13 +24,14 @@ antigen bundle chrissicool/zsh-256color
 antigen bundle zsh-users/zsh-syntax-highlighting
 
 antigen apply
+
+# Source autojump correctly across macOS/NixOS
+include $HOME/.local/share/autojump.sh
+include /opt/homebrew/etc/profile.d/autojump.sh
+
 ###
 
 ### User configuration
-
-# Autojump (prereq: brew install autojump)
-[ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
-###
 
 ### Prompt (prereq: brew install pure)
 include  $ZSH/oh-my-zsh.sh
