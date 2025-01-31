@@ -42,11 +42,18 @@ antigen bundle zsh-users/zsh-syntax-highlighting
 antigen apply
 
 echo "Antigen applied."
+echo "fpath immediately after antigen apply:"
+print -l $fpath
+
+# Force reinitialization of completions in case compinit was run earlier
+echo "Forcing compinit re-run..."
+autoload -Uz compinit
+compinit -u
+echo "Compinit reinitialized."
 
 # Source autojump correctly across macOS/NixOS
 include $HOME/.local/share/autojump.sh
 include /opt/homebrew/etc/profile.d/autojump.sh
-
 ###
 
 ### User configuration
@@ -92,5 +99,15 @@ load-nvmrc() {
 }
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc    
+
+# Re-run compinit once if not already done.
+if [ -z "$ANTIGEN_COMPINIT_DONE" ]; then
+    echo "Running compinit re-run once."
+    autoload -Uz compinit && compinit -D -u
+    export ANTIGEN_COMPINIT_DONE=1
+fi
+
+echo "Final fpath after compinit re-run:"
+print -l $fpath
 
 echo "=== Sourcing .zshrc END ==="
