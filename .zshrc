@@ -4,9 +4,20 @@ include () {
 }
 ###
 
+### ZSH Configuration
+HISTSIZE=100000
+SAVEHIST=100000
+###
+
 export ZSH="$HOME/.oh-my-zsh"
 
-fpath+=("$(brew --prefix)/share/zsh/site-functions")
+## Commands that are only needed on macOS using brew
+if command -v brew &>/dev/null; then
+  fpath+=("$(brew --prefix)/share/zsh/site-functions")
+  # GCP (prereq: brew install --cask google-cloud-sdk)
+  source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
+  source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
+fi
 
 # Source Antigen correctly across macOS/NixOS
 include /opt/homebrew/share/antigen/antigen.zsh
@@ -48,14 +59,6 @@ include $HOME/.private_aliases
 
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 export PATH="$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH"
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
-
-# GCP (prereq: brew install --cask google-cloud-sdk)
-source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
-source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
 
 # NVM (prereq: brew install nvm)
 export NVM_DIR="$HOME/.nvm"
