@@ -1,3 +1,5 @@
+echo "=== Sourcing .zshrc START ==="
+
 ### Helper functions
 include () {
     [[ -f "$1" ]] && source "$1" 2> /dev/null
@@ -21,9 +23,12 @@ fi
 
 # Source Antigen correctly across macOS/NixOS
 include /opt/homebrew/share/antigen/antigen.zsh
-include $HOME/.local/share/antigen.zsh
+
+echo "Sourcing antigen script..."
+source "$HOME/.local/share/antigen.zsh" || echo "Failed to source antigen script!"
 
 ### Plugins - Manged by Antigen (brew install antigen)
+echo "Initializing Antigen..."
 antigen use oh-my-zsh
 
 antigen bundle git
@@ -35,6 +40,8 @@ antigen bundle chrissicool/zsh-256color
 antigen bundle zsh-users/zsh-syntax-highlighting
 
 antigen apply
+
+echo "Antigen applied."
 
 # Source autojump correctly across macOS/NixOS
 include $HOME/.local/share/autojump.sh
@@ -85,3 +92,5 @@ load-nvmrc() {
 }
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc    
+
+echo "=== Sourcing .zshrc END ==="
