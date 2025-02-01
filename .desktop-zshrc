@@ -1,8 +1,0 @@
-#!/usr/bin/env zsh
-
-# Source autojump which is installed via Home Manager
-[[ -f "$HOME/.local/share/autojump.sh" ]] && source "$HOME/.local/share/autojump.sh"
-
-# Source  personal aliases or functions.
-[[ -f "$HOME/.bash_aliases" ]]    && source "$HOME/.bash_aliases"
-[[ -f "$HOME/.private_aliases" ]] && source "$HOME/.private_aliases"
