@@ -1,105 +1,90 @@
 #! /bin/bash
 
-# 1. run nix flake update
-# 2. git add the updated flake.lock
+# Global variable for NixOS config directory
+NIX_CONFIG_DIR="/home/khernand/Documents/code/nixos-config"
+BRANCH="main"
+
+# Helper function: Change to flake directory
+enter_flake_dir() {
+  if [ ! -d "$NIX_CONFIG_DIR" ]; then
+    echo "❌ Error: Flake directory not found: $NIX_CONFIG_DIR"
+    return 1
+  fi
+  pushd "$NIX_CONFIG_DIR" > /dev/null
+}
+
+# Helper function: Check if directory is a Git repo
+is_git_repo() {
+  git rev-parse --is-inside-work-tree > /dev/null 2>&1
+}
+
+# Helper function: Add and commit changes to Git
+git_commit_push() {
+  if is_git_repo; then
+    git add .
+    git commit -m "chore(nix): Auto-update $(date -I)"
+    git push origin "$BRANCH"
+    echo "🚀 Changes committed and pushed to $BRANCH."
+  else
+    echo "⚠ Warning: Not a Git repository, skipping commit and push."
+  fi
+}
+
+# Function: Update flake.lock and add it to Git
 nix-update() {
-  local flake_dir="/home/khernand/Documents/code/nixos-config"
-
-  if [ -d "$flake_dir" ]; then
-    pushd "$flake_dir" > /dev/null
-
-    echo "🔄 Updating Nix flake..."
-    nix flake update
-
-    if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-      git add flake.lock
-      echo "✅ flake.lock added to Git."
-    else
-      echo "⚠ Warning: Not a Git repository, skipping Git add."
-    fi
-
-    popd > /dev/null
+  enter_flake_dir || return
+  echo "🔄 Updating Nix flake..."
+  nix flake update
+  if is_git_repo; then
+    git add flake.lock
+    echo "✅ flake.lock added to Git."
   else
-    echo "❌ Error: Flake directory not found: $flake_dir"
+    echo "⚠ Warning: Not a Git repository, skipping Git add."
   fi
+  popd > /dev/null
 }
 
-# 1. git add all files in the nixos-config directory
-# 2. run the rebuild
+# Function: Add all files to Git and rebuild NixOS
 nix-rebuild() {
-  local flake_dir="/home/khernand/Documents/code/nixos-config"
-
-  if [ -d "$flake_dir" ]; then
-    pushd "$flake_dir" > /dev/null
-
-    if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-      git add .
-      echo "✅ All changes added to Git."
-    else
-      echo "⚠ Warning: Not a Git repository, skipping Git add."
-    fi
-
-    echo "🛠 Running NixOS rebuild..."
-    sudo nixos-rebuild switch --flake "$flake_dir#desktop"
-
-    popd > /dev/null
+  enter_flake_dir || return
+  if is_git_repo; then
+    git add .
+    echo "✅ All changes added to Git."
   else
-    echo "❌ Error: Flake directory not found: $flake_dir"
+    echo "⚠ Warning: Not a Git repository, skipping Git add."
   fi
+  echo "🛠 Running NixOS rebuild..."
+  sudo nixos-rebuild switch --flake "$NIX_CONFIG_DIR#desktop"
+  popd > /dev/null
 }
 
-# Update and rebuild NixOS configuration
+# Function: Full update (nix-update + nix-rebuild)
 nix-full-update() {
   nix-update
   nix-rebuild
 }
 
-# Persist changes to the NixOS configuration
+# Function: Commit and push all changes to Git
 nix-persist() {
-  local flake_dir="/home/khernand/Documents/code/nixos-config"
-  local branch="main"  # Change this if you use a different branch
-
-  if [ -d "$flake_dir" ]; then
-    pushd "$flake_dir" > /dev/null
-
-    if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-      git commit -m "chore(nix): Auto-update $(date -I)"
-      git push origin "$branch"
-      echo "🚀 Changes committed and pushed to $branch."
-    else
-      echo "⚠ Warning: Not a Git repository, skipping commit and push."
-    fi
-
-    popd > /dev/null
-  else
-    echo "❌ Error: Flake directory not found: $flake_dir"
-  fi
+  enter_flake_dir || return
+  git_commit_push
+  popd > /dev/null
 }
 
+# Function: Update only `dotfiles` dependency, rebuild, and persist
 nix-update-dotfiles() {
-  local flake_dir="/home/khernand/Documents/code/nixos-config"
-
-  if [ -d "$flake_dir" ]; then
-    pushd "$flake_dir" > /dev/null
-
-    echo "🔄 Updating flake input: dotfiles..."
-    nix flake update --update-input dotfiles
-
-    if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-      git add flake.lock
-      echo "✅ Updated and added flake.lock for dotfiles"
-    else
-      echo "⚠ Warning: Not a Git repository, skipping Git add."
-    fi
-
-    echo "🛠 Running NixOS rebuild..."
-    sudo nixos-rebuild switch --flake "$flake_dir#desktop"
-
-    popd > /dev/null
-
-    echo "🚀 Running nix-persist..."
-    nix-persist  # Ensure nix-persist is defined in your shell
+  enter_flake_dir || return
+  echo "🔄 Updating flake input: dotfiles..."
+  nix flake update --update-input dotfiles
+  if is_git_repo; then
+    git add flake.lock
+    echo "✅ Updated and added flake.lock for dotfiles"
   else
-    echo "❌ Error: Flake directory not found: $flake_dir"
+    echo "⚠ Warning: Not a Git repository, skipping Git add."
   fi
+  echo "🛠 Running NixOS rebuild..."
+  sudo nixos-rebuild switch --flake "$NIX_CONFIG_DIR#desktop"
+  popd > /dev/null
+  echo "🚀 Running nix-persist..."
+  nix-persist
 }
