@@ -1,0 +1,22 @@
+#! /bin/bash
+update-dotfiles() {
+    local dotfiles_dir="/home/khernand/Documents/code/dotfiles"
+    local branch="main"  # Change this if you use a different branch
+
+    if [ -d "$dotfiles_dir" ]; then
+        pushd "$dotfiles_dir" > /dev/null
+
+    if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+        git add .
+        git commit -m "chore(dotfiles): Auto-update $(date -I)"
+        git push origin "$branch"
+        echo "🚀 Dotfiles committed and pushed to $branch."
+    else
+        echo "⚠ Warning: Not a Git repository, skipping commit and push."
+    fi
+
+        popd > /dev/null
+    else
+        echo "❌ Error: Dotfiles directory not found: $dotfiles_dir"
+    fi
+}
