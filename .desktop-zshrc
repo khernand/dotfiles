@@ -1,11 +1,5 @@
 #!/usr/bin/env zsh
 
-export ZSH="$HOME/.oh-my-zsh"
-
-# Prompt customization.
-autoload -U promptinit && promptinit
-prompt pure
-
 # Source autojump which is installed via Home Manager
 [[ -f "$HOME/.local/share/autojump.sh" ]] && source "$HOME/.local/share/autojump.sh"
 
