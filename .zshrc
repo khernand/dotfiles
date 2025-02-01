@@ -1,34 +1,17 @@
-echo "=== Sourcing .zshrc START ==="
-
 ### Helper functions
 include () {
     [[ -f "$1" ]] && source "$1" 2> /dev/null
 }
 ###
 
-### ZSH Configuration
-HISTSIZE=100000
-SAVEHIST=100000
-###
-
 export ZSH="$HOME/.oh-my-zsh"
 
-## Commands that are only needed on macOS using brew
-if command -v brew &>/dev/null; then
-  fpath+=("$(brew --prefix)/share/zsh/site-functions")
-  # GCP (prereq: brew install --cask google-cloud-sdk)
-  source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
-  source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
-fi
+fpath+=("$(brew --prefix)/share/zsh/site-functions")
 
-# Source Antigen correctly across macOS/NixOS
 include /opt/homebrew/share/antigen/antigen.zsh
-
-echo "Sourcing antigen script..."
-source "$HOME/.local/share/antigen.zsh" || echo "Failed to source antigen script!"
+include $HOME/.local/share/antigen.zsh
 
 ### Plugins - Manged by Antigen (brew install antigen)
-echo "Initializing Antigen..."
 antigen use oh-my-zsh
 
 antigen bundle git
@@ -40,23 +23,13 @@ antigen bundle chrissicool/zsh-256color
 antigen bundle zsh-users/zsh-syntax-highlighting
 
 antigen apply
-
-echo "Antigen applied."
-echo "fpath immediately after antigen apply:"
-print -l $fpath
-
-# Force reinitialization of completions in case compinit was run earlier
-echo "Forcing compinit re-run..."
-autoload -Uz compinit
-compinit -u
-echo "Compinit reinitialized."
-
-# Source autojump correctly across macOS/NixOS
-include $HOME/.local/share/autojump.sh
-include /opt/homebrew/etc/profile.d/autojump.sh
 ###
 
 ### User configuration
+
+# Autojump (prereq: brew install autojump)
+[ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
+###
 
 ### Prompt (prereq: brew install pure)
 include  $ZSH/oh-my-zsh.sh
@@ -73,6 +46,14 @@ include $HOME/.private_aliases
 
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 export PATH="$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+
+# GCP (prereq: brew install --cask google-cloud-sdk)
+source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
+source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
 
 # NVM (prereq: brew install nvm)
 export NVM_DIR="$HOME/.nvm"
@@ -99,15 +80,3 @@ load-nvmrc() {
 }
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc    
-
-# Re-run compinit once if not already done.
-if [ -z "$ANTIGEN_COMPINIT_DONE" ]; then
-    echo "Running compinit re-run once."
-    autoload -Uz compinit && compinit -D -u
-    export ANTIGEN_COMPINIT_DONE=1
-fi
-
-echo "Final fpath after compinit re-run:"
-print -l $fpath
-
-echo "=== Sourcing .zshrc END ==="
