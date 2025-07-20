@@ -1,0 +1,25 @@
+---
+- name: Ensure Homebrew is installed
+  homebrew:
+    state: present
+
+- name: Install Homebrew packages
+  homebrew:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ homebrew_installed_packages }}"
+  when: homebrew_installed_packages | length > 0
+
+- name: Install Homebrew cask apps
+  homebrew_cask:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ homebrew_cask_apps }}"
+  when: homebrew_cask_apps | length > 0
+
+- name: Install MAS apps (Mac App Store)
+  community.general.mas:
+    id: "{{ item }}"
+    state: present
+  loop: "{{ mas_installed_apps }}"
+  when: mas_installed_apps | length > 0

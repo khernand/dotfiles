@@ -1,0 +1,9 @@
+- name: Ensure GNU Stow is installed
+  homebrew:
+    name: stow
+    state: present
+
+- name: Stow all dotfiles into home directory
+  shell: stow . -t "$HOME"
+  args:
+    chdir: "{{ playbook_dir }}/../../../../.." 

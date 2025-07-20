@@ -1,0 +1,33 @@
+homebrew_installed_packages:
+  - git
+  - wget
+  - zsh
+  - antigen
+  - pure
+  - autojump
+  - tmux
+  - node
+  - python
+  - go
+  - neovim
+  - jq
+  - ripgrep
+  - ffmpeg
+
+homebrew_cask_apps:
+  - 1password
+  - 1password-cli
+  - adobe-creative-cloud
+  - audacity
+  - caffeine
+  - dbeaver-community
+  - font-fira-code
+  - google-chrome
+  - insomnia
+  - kitty
+  - miniconda
+  - obsidian
+  - slack
+  - visual-studio-code
+
+mas_installed_apps: []  # e.g., 497799835  # Xcode (optional if `mas` installed)

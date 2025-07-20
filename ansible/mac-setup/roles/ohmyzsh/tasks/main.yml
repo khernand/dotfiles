@@ -1,0 +1,12 @@
+---
+- name: Ensure zsh is installed
+  homebrew:
+    name: zsh
+    state: present
+
+- name: Install Oh My Zsh (if not already installed)
+  shell: |
+    RUNZSH=no CHSH=no KEEP_ZSHRC=yes \
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  args:
+    creates: ~/.oh-my-zsh
