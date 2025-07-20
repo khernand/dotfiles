@@ -20,6 +20,7 @@ homebrew_cask_apps:
   - adobe-creative-cloud
   - audacity
   - caffeine
+  - docker-desktop
   - dbeaver-community
   - font-fira-code
   - google-chrome
